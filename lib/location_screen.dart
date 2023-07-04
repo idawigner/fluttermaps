@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:integratingmaps/bloc/gelocation_state.dart';
+import 'package:integratingmaps/bloc/geolocation_bloc.dart';
+import 'package:integratingmaps/widgets/location_serach_box.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key});
@@ -14,52 +18,75 @@ class _LocationScreenState extends State<LocationScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          SizedBox(
+          Container(
             height: MediaQuery.of(context).size.height,
             width: double.infinity,
-            child: const GoogleMap(
-              myLocationEnabled: true,
-              initialCameraPosition:
-                  CameraPosition(target: LatLng(10, 10), zoom: 5),
-            ),
+            child: BlocBuilder<GeolocationBloc, GeolocationState>(
+                builder: (context, state) {
+              if (state is Geolocationloading) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is Geolocationloaded) {
+                return GMap(
+                  lat: state.position.latitude,
+                  lng: state.position.longitude,
+                );
+              } else {
+                return Text('something went wrong');
+              }
+            }),
           ),
-          const Positioned(
-              top: 50, left: 20, right: 20, child: LocationSearchBox()),
+          Positioned(
+              top: 40,
+              left: 20,
+              right: 20,
+              child: Container(
+                height: 100,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(child: LocationSearchBox()),
+                  ],
+                ),
+              )),
+          Positioned(
+              bottom: 50,
+              left: 20,
+              right: 20,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 70),
+                child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFFFEAF00),
+                        primary: Theme.of(context).primaryColor),
+                    child: Text('SAVE')),
+              ))
         ],
       ),
     );
   }
 }
 
-class LocationSearchBox extends StatelessWidget {
-  const LocationSearchBox({
+class GMap extends StatelessWidget {
+  const GMap({
     super.key,
+    required double lat,
+    required double lng,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextField(
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
-          hintText: 'Enter Your Location',
-          suffixIcon: const Icon(Icons.search),
-          contentPadding: const EdgeInsets.only(left: 20, bottom: 5, right: 5),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Colors.white),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Colors.white),
-          ),
-        ),
-      ),
+    return const GoogleMap(
+      myLocationEnabled: true,
+      initialCameraPosition: CameraPosition(target: LatLng(10, 10), zoom: 5),
     );
   }
 }
+
 
 
 // class LocationScreen extends StatefulWidget {
