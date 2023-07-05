@@ -1,7 +1,3 @@
-import 'dart:async';
-
-import 'package:flutter/widgets.dart';
-
 import 'package:equatable/equatable.dart';
 
 import 'package:geolocator/geolocator.dart';

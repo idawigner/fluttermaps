@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class GMap extends StatelessWidget {
   final double lat;
   final double lng;
+
   const GMap({
     Key? key,
     required this.lat,
@@ -12,13 +13,17 @@ class GMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      child: GoogleMap(
-        myLocationEnabled: true,
-        initialCameraPosition:
-            CameraPosition(target: LatLng(lat, lng), zoom: 5),
+    return GoogleMap(
+      initialCameraPosition: CameraPosition(
+        target: LatLng(lat, lng),
+        zoom: 14,
       ),
+      markers: {
+        Marker(
+          markerId: MarkerId('currentLocation'),
+          position: LatLng(lat, lng),
+        ),
+      },
     );
   }
 }

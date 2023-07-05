@@ -23,11 +23,11 @@ class _LocationScreenState extends State<LocationScreen> {
             width: double.infinity,
             child: BlocBuilder<GeolocationBloc, GeolocationState>(
                 builder: (context, state) {
-              if (state is Geolocationloading) {
+              if (state is GeolocationLoading) {
                 return Center(
                   child: CircularProgressIndicator(),
                 );
-              } else if (state is Geolocationloaded) {
+              } else if (state is GeolocationLoaded) {
                 return GMap(
                   lat: state.position.latitude,
                   lng: state.position.longitude,

@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:integratingmaps/bloc/gelocation_event.dart';
 import 'package:integratingmaps/bloc/gelocation_state.dart';
@@ -10,29 +9,36 @@ import 'package:integratingmaps/repositories/geolocation/gelocation_repository.d
 class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
   final GeolocationRepository _geolocationRepository;
   StreamSubscription? _geolocationSubscription;
+
   GeolocationBloc({required GeolocationRepository geolocationRepository})
       : _geolocationRepository = geolocationRepository,
-        super(Geolocationloading());
+        super(GeolocationLoading()) {
+    _geolocationSubscription?.cancel();
+    add(LoadGeolocation());
+  }
 
-  Stream<GeolocationState> mapEventToState(
-    GeolocationEvent event,
-  ) async* {
+  @override
+  Stream<GeolocationState> mapEventToState(GeolocationEvent event) async* {
     if (event is LoadGeolocation) {
       yield* _mapLoadGeolocationToState();
     } else if (event is UpdateGeolocation) {
-      yield* __mapUpdateGeolocationToState(event);
+      yield* _mapUpdateGeolocationToState(event);
     }
   }
 
   Stream<GeolocationState> _mapLoadGeolocationToState() async* {
-    _geolocationSubscription?.cancel();
-    final Position position = await _geolocationRepository.getCurrentLocation();
-    add(UpdateGeolocation(position: position));
+    try {
+      final Position position =
+          await _geolocationRepository.getCurrentLocation();
+      yield GeolocationLoaded(position: position);
+    } catch (e) {
+      yield GeolocationError(message: 'Failed to load geolocation data.');
+    }
   }
 
-  Stream<GeolocationState> __mapUpdateGeolocationToState(
+  Stream<GeolocationState> _mapUpdateGeolocationToState(
       UpdateGeolocation event) async* {
-    yield Geolocationloaded(position: event.position);
+    yield GeolocationLoaded(position: event.position);
   }
 
   @override
