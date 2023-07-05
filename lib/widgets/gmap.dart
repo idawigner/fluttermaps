@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class GMap extends StatelessWidget {
@@ -21,7 +20,7 @@ class GMap extends StatelessWidget {
       ),
       markers: {
         Marker(
-          markerId: MarkerId('currentLocation'),
+          markerId: const MarkerId('currentLocation'),
           position: LatLng(lat, lng),
         ),
       },

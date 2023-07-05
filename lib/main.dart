@@ -29,11 +29,11 @@ class MyApp extends StatelessWidget {
           BlocProvider(
               create: (context) => GeolocationBloc(
                   geolocationRepository: context.read<GeolocationRepository>())
-                ..add(LoadGeolocation())),
+                ..add(const LoadGeolocation())),
           BlocProvider(
               create: (context) => AutocompleteBloc(
                   placesRepository: context.read<PlacesRepository>())
-                ..add(LoadAutocomplete())),
+                ..add(const LoadAutocomplete())),
         ],
         child: MaterialApp(
           title: 'Maps',

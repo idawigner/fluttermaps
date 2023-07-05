@@ -12,9 +12,9 @@ class LocationSearchBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AutocompleteBloc, AutocompleteState>(
-      builder: (context, State) {
+      builder: (context, state) {
         if (State is AutocompleteLoading) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
@@ -45,7 +45,7 @@ class LocationSearchBox extends StatelessWidget {
                 }),
           );
         } else {
-          return Text('Something Went Wrong');
+          return const Text('Something Went Wrong');
         }
       },
     );

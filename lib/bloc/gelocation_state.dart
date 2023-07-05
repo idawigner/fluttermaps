@@ -4,18 +4,17 @@ import 'package:geolocator/geolocator.dart';
 abstract class GeolocationState extends Equatable {
   const GeolocationState();
   @override
-  List<Object?> get Props => [];
+  List<Object?> get props => [];
 }
 
 class Geolocationloading extends GeolocationState {
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
 
 class Geolocationloaded extends GeolocationState {
   final Position position;
-  Geolocationloaded({required this.position});
+  const Geolocationloaded({required this.position});
 
   @override
   List<Object?> get props => [position];

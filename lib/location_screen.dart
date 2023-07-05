@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:integratingmaps/bloc/autocomplete/autocomplete_bloc.dart';
-import 'package:integratingmaps/bloc/autocomplete/autocomplete_event.dart';
 import 'package:integratingmaps/bloc/autocomplete/autocomplete_state.dart';
 
 import 'package:integratingmaps/bloc/gelocation_state.dart';
@@ -22,13 +21,13 @@ class _LocationScreenState extends State<LocationScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height,
             width: double.infinity,
             child: BlocBuilder<GeolocationBloc, GeolocationState>(
                 builder: (context, state) {
               if (state is Geolocationloading) {
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               } else if (state is Geolocationloaded) {
@@ -37,7 +36,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   lng: state.position.longitude,
                 );
               } else {
-                return Text('something went wrong');
+                return const Text('something went wrong');
               }
             }),
           ),
@@ -45,21 +44,21 @@ class _LocationScreenState extends State<LocationScreen> {
               top: 40,
               left: 20,
               right: 20,
-              child: Container(
+              child: SizedBox(
                 height: 100,
                 child: Row(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     Expanded(
                         child: Column(
                       children: [
-                        LocationSearchBox(),
+                        const LocationSearchBox(),
                         BlocBuilder<AutocompleteBloc, AutocompleteState>(
-                          builder: (context, State) {
+                          builder: (context, state) {
                             if (State is AutocompleteLoading) {
-                              return Center(
+                              return const Center(
                                 child: CircularProgressIndicator(),
                               );
                             }
@@ -81,7 +80,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                     }),
                               );
                             } else {
-                              return Text('SomeThing went Wrong');
+                              return const Text('SomeThing went Wrong');
                             }
                           },
                         )
@@ -99,54 +98,12 @@ class _LocationScreenState extends State<LocationScreen> {
                 child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFFFEAF00),
-                        primary: Theme.of(context).primaryColor),
-                    child: Text('SAVE')),
+                      backgroundColor: const Color(0xFFFEAF00),
+                    ),
+                    child: const Text('SAVE')),
               ))
         ],
       ),
     );
   }
 }
-
-// class LocationScreen extends StatefulWidget {
-//   const LocationScreen({super.key});
-
-//   @override
-//   State<LocationScreen> createState() => _LocationScreenState();
-// }
-
-// class _LocationScreenState extends State<LocationScreen> {
-//   final Completer<GoogleMapController> controller = Completer();
-
-//   static LatLng sourceLocation = const LatLng(37.3352, -122);
-//   static LatLng destinationLocation = const LatLng(37.3342, -122.0660);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text(
-//           'Location',
-//         ),
-//         leading: IconButton(
-//             icon: const Icon(Icons.arrow_back_ios),
-//             onPressed: () => Navigator.of(context, rootNavigator: true).pop()),
-//         automaticallyImplyLeading: true,
-//       ),
-//       body: GoogleMap(
-//           initialCameraPosition:
-//               CameraPosition(target: sourceLocation, zoom: 12),
-//           markers: {
-//             Marker(
-//               markerId: const MarkerId("source"),
-//               position: sourceLocation,
-//             ),
-//             Marker(
-//               markerId: const MarkerId("destination"),
-//               position: destinationLocation,
-//             ),
-//           }),
-//     );
-//   }
-// }

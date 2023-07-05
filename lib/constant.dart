@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-const String googleAPIKey = "AIzaSyCwRkjF0Lcdtm5OywH0A5f4M3d_RJ1uEi4";
-const String AndroidAPIKey = "AIzaSyDss97ILgS7iUMv3EizmmXC5fWxFpDfm1I";
-
 const yPrimaryColorLight = Color(0xFFFFCF63);
 const yPrimaryColor = Color(0xFFFEAF00);
 const yPrimaryColorDark = Color(0xFFC58800);
