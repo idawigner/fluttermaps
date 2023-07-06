@@ -9,36 +9,29 @@ import 'package:integratingmaps/repositories/geolocation/gelocation_repository.d
 class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
   final GeolocationRepository _geolocationRepository;
   StreamSubscription? _geolocationSubscription;
-
   GeolocationBloc({required GeolocationRepository geolocationRepository})
       : _geolocationRepository = geolocationRepository,
-        super(GeolocationLoading()) {
-    _geolocationSubscription?.cancel();
-    add(LoadGeolocation());
-  }
-
+        super(Geolocationloading());
   @override
-  Stream<GeolocationState> mapEventToState(GeolocationEvent event) async* {
+  Stream<GeolocationState> mapEventToState(
+    GeolocationEvent event,
+  ) async* {
     if (event is LoadGeolocation) {
       yield* _mapLoadGeolocationToState();
     } else if (event is UpdateGeolocation) {
-      yield* _mapUpdateGeolocationToState(event);
+      yield* __mapUpdateGeolocationToState(event);
     }
   }
 
   Stream<GeolocationState> _mapLoadGeolocationToState() async* {
-    try {
-      final Position position =
-          await _geolocationRepository.getCurrentLocation();
-      yield GeolocationLoaded(position: position);
-    } catch (e) {
-      yield GeolocationError(message: 'Failed to load geolocation data.');
-    }
+    _geolocationSubscription?.cancel();
+    final Position position = await _geolocationRepository.getCurrentLocation();
+    add(UpdateGeolocation(position: position));
   }
 
-  Stream<GeolocationState> _mapUpdateGeolocationToState(
+  Stream<GeolocationState> __mapUpdateGeolocationToState(
       UpdateGeolocation event) async* {
-    yield GeolocationLoaded(position: event.position);
+    yield Geolocationloaded(position: event.position);
   }
 
   @override
